@@ -1,0 +1,118 @@
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Elderly Human Recognition System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+        }
+        .system-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .upload-form, .results-form, .stop-form {
+            margin-top: 20px;
+        }
+        .upload-form input[type="file"], .results-form input[type="text"], .stop-form input[type="text"], .stop-form input[type="submit"], .upload-form input[type="submit"], .results-form input[type="submit"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .upload-form input[type="submit"], .results-form input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        .upload-form input[type="submit"]:hover, .results-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Elderly Human Recognition System</h1>
+        <img src="{{ url_for('static', filename='images/Screenshot 2024-06-29 021615.png') }}" alt="Elderly Human Recognition System" class="system-image">
+        
+        <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form" id="upload-form">
+            <input type="file" name="file">
+            <input type="submit" value="Upload">
+        </form>
+
+        <h1>Stop Prediction</h1>
+        <form id="stop-form" class="stop-form" method="post">
+            <input type="text" name="file_id" placeholder="File ID">
+            <input type="submit" value="Stop">
+        </form>
+
+        <h1>Get Results</h1>
+        <form id="results-form" class="results-form" method="get">
+            <input type="text" name="file_id" placeholder="File ID">
+            <input type="submit" value="Get Results">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').onsubmit = function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message || data.error));
+        };
+
+        document.getElementById('stop-form').onsubmit = function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const file_id = formData.get('file_id');
+            fetch('/stop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ file_id: file_id })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message || data.error));
+        };
+
+        document.getElementById('results-form').onsubmit = function(event) {
+            event.preventDefault();
+            const file_id = new FormData(event.target).get('file_id');
+            window.location.href = '/results/' + file_id;
+        };
+    </script>
+</body>
+</html>
