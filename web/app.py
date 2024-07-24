@@ -23,7 +23,7 @@ custom_objects = {'Orthogonal': Orthogonal, 'LSTM': CustomLSTM}
 
 # Load the saved LSTM model with custom objects
 loaded_model = load_model(
-    "D:/Semester 7/Human_activity_recognition_system/models/lstm_model.h5",
+    "C:\Users\LENOVO\Desktop\human_activity_recognition_system\models\lstm_model.h5",
     custom_objects=custom_objects
 )
 
