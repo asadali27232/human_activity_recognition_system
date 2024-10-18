@@ -16,7 +16,7 @@ export default function HomeScreen() {
     useEffect(() => {
         // Function to fetch elder data
         const fetchEldersData = () => {
-            fetch('http://192.168.10.9:5000/get_elders') // Replace with your local IP
+            fetch('http://192.168.10.7:5000/get_elders') // Replace with your local IP
                 .then((response) => response.json())
                 .then((data) => {
                     // Check for activity change to 'Shuffling'
@@ -54,7 +54,7 @@ export default function HomeScreen() {
     }, []);
 
     const handleRemove = (id) => {
-        const apiUrl = `http://192.168.10.9:5000/remove_elder/${id}`;
+        const apiUrl = `http://192.168.10.7:5000/remove_elder/${id}`;
         fetch(apiUrl, { method: 'DELETE' })
             .then((response) => {
                 if (!response.ok) {

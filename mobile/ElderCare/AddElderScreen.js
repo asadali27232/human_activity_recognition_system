@@ -9,14 +9,17 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-
+import Data from './dataHandler'; // Import the data handling class
+let eldersData = new Data(); // Create an instance of the data handling class
 export default function AddElderScreen() {
     const [selectedElder, setSelectedElder] = useState('1'); // Default to '1'
     const [loading, setLoading] = useState(false); // State for loading
 
-    const handleAdd = () => {
+    const [addedElders, setAddedElders] = useState([]); // State for added elders
+
+    const handleAdd1 = () => {
         // Construct the API URL
-        const apiUrl = 'http://192.168.10.9:5000/add_elder'; // Replace with your server URL
+        const apiUrl = 'http://192.168.10.7:5000/add_elder'; // Replace with your server URL
 
         // Set loading to true
         setLoading(true);
@@ -42,6 +45,15 @@ export default function AddElderScreen() {
                 // Set loading to false
                 setLoading(false);
             });
+    };
+
+    const handleAdd = async () => {
+        setLoading(true);
+        setAddedElders([...addedElders, selectedElder]);
+        await eldersData.addData(selectedElder);
+        console.log(addedElders);
+        Alert.alert('Success', 'Elder added successfully');
+        setLoading(false);
     };
 
     return (
